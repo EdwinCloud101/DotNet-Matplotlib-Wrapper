@@ -2,21 +2,21 @@
 {
     public class MatplotLibSingleCall : IMatplotLibSingleCall
     {
-        public IPythonConnector Connector { get; private set; }
+        public IMatplotlibComposer Composer { get; private set; }
         public void Plot2Lists(ITwoListInput twoListInput)
         {
-            string path = Connector.PythonPath;
+            string path = Composer.Connector.PythonPath;
         }
 
-        public MatplotLibSingleCall(IPythonConnector pythonConnector)
+        public MatplotLibSingleCall(IMatplotlibComposer pythonConnector)
         {
-            Connector = pythonConnector;
+            Composer = pythonConnector;
         }
     }
 
     public interface IMatplotLibSingleCall
     {
-        IPythonConnector Connector { get; }
+        IMatplotlibComposer Composer { get; }
         void Plot2Lists(ITwoListInput twoListInput);
     }
 }
