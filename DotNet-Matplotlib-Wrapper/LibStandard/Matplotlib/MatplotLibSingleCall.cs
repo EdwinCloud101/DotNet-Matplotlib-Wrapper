@@ -3,9 +3,9 @@
     public class MatplotLibSingleCall : IMatplotLibSingleCall
     {
         public IPythonConnector Connector { get; private set; }
-        public TwoListInput Plot2Lists()
+        public void Plot2Lists(ITwoListInput twoListInput)
         {
-            throw new System.NotImplementedException();
+            string path = Connector.PythonPath;
         }
 
         public MatplotLibSingleCall(IPythonConnector pythonConnector)
@@ -17,6 +17,6 @@
     public interface IMatplotLibSingleCall
     {
         IPythonConnector Connector { get; }
-        TwoListInput Plot2Lists();
+        void Plot2Lists(ITwoListInput twoListInput);
     }
 }

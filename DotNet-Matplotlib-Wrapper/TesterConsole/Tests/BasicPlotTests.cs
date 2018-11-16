@@ -17,6 +17,13 @@ namespace TesterConsole.Tests
         {
             IPythonConnector connection = new PythonConnector(PythonResources.GetPythonPath());
             IMatplotLibSingleCall singleCall = new MatplotLibSingleCall(connection);
+
+            List<string> list1 = new List<string>() {"2018-Jan", "2018-Feb", "2018-Mar" };
+            List<string> list2 = new List<string>() { "0%", "0.3%", "0.22%" };
+
+            ITwoListInput twoListInput = new TwoListInput();
+
+            singleCall.Plot2Lists(twoListInput);
         }
     }
 }
