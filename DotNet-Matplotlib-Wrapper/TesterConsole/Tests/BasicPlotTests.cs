@@ -18,8 +18,13 @@ namespace TesterConsole.Tests
             List<decimal> list2 = new List<decimal>() { 0.0m, 0.31m, 0.22m, 0.22m };
 
             ITwoListInput<int, decimal> twoListInput = new TwoListInput<int, decimal>();
+
+            twoListInput.Title = "Simple Title";
+            twoListInput.Input1Title = "Days";
             twoListInput.Input1 = list1;
+            twoListInput.Input2Title = "Growth";
             twoListInput.Input2 = list2;
+
             singleCall.Plot2Lists(twoListInput);
         }
     }

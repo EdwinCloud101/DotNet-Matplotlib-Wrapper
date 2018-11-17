@@ -33,6 +33,10 @@
             PythonProcess.AddInstruction("plt.scatter(arr1,arr2)");
             PythonProcess.AddInstruction("plt.plot(arr1,arr2)");
 
+            PythonProcess.AddInstruction("plt.title(\"" + twoListInput.Title + "\")");
+            PythonProcess.AddInstruction("plt.xlabel(\"" + twoListInput.Input1Title + "\")");
+            PythonProcess.AddInstruction("plt.ylabel(\"" + twoListInput.Input2Title + "\")");
+
             PythonProcess.AddInstruction("plt.show()");
             PythonProcess.CommitInstruction();
         }

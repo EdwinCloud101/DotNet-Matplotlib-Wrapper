@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace LibStandard.Matplotlib
 {
     public class TwoListInput<T, Q> : ITwoListInput<T, Q>
     {
+        public string Title { get; set; }
         public string Input1Title { get; set; }
         public List<T> Input1 { get; set; }
 
@@ -33,6 +32,7 @@ namespace LibStandard.Matplotlib
 
     public interface ITwoListInput<T, Q>
     {
+        string Title { get; set; }
         string Input1Title { get; set; }
         List<T> Input1 { get; set; }
 
