@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Text;
+﻿using System.Configuration;
 
 namespace LibStandard
 {
@@ -10,7 +6,7 @@ namespace LibStandard
     {
         public static string GetPythonPath()
         {
-            return ConfigurationManager.AppSettings["pythonPath"];
+            return "cmd.exe"; //ConfigurationManager.AppSettings["pythonPath"];
         }
     }
 }

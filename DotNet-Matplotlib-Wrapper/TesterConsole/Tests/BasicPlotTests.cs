@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using LibStandard;
 using LibStandard.Matplotlib;
 using NUnit.Framework;
@@ -15,15 +11,15 @@ namespace TesterConsole.Tests
         [Test]
         public void TwoAxisBasicTest()
         {
-            IPythonConnector connection = new PythonConnector(PythonResources.GetPythonPath());
-            IMatplotlibComposer matComposer = new MatplotlibComposer(connection);
-            IMatplotLibSingleCall singleCall = new MatplotLibSingleCall(matComposer);
+            IPythonProcess pythonProcess = new PythonProcess(PythonResources.GetPythonPath());
+            IMatplotLibSingleCall<int, decimal> singleCall = new MatplotLibSingleCall<int, decimal>(pythonProcess);
 
-            List<string> list1 = new List<string>() {"2018-Jan", "2018-Feb", "2018-Mar" };
-            List<string> list2 = new List<string>() { "0%", "0.3%", "0.22%" };
+            List<int> list1 = new List<int>() { 1, 2, 3, 4 };
+            List<decimal> list2 = new List<decimal>() { 0.0m, 0.31m, 0.22m, 0.22m };
 
-            ITwoListInput twoListInput = new TwoListInput();
-
+            ITwoListInput<int, decimal> twoListInput = new TwoListInput<int, decimal>();
+            twoListInput.Input1 = list1;
+            twoListInput.Input2 = list2;
             singleCall.Plot2Lists(twoListInput);
         }
     }

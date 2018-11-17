@@ -4,20 +4,21 @@ using System.Linq;
 
 namespace LibStandard.Matplotlib
 {
-    public class TwoListInput : ITwoListInput
+    public class TwoListInput<T, Q> : ITwoListInput<T, Q>
     {
-        public string Input1Title { get; private set; }
-        public List<string> Input1 { get; private set; }
+        public string Input1Title { get; set; }
+        public List<T> Input1 { get; set; }
 
-        public string Input2Title { get; private set; }
-        public List<string> Input2 { get; private set; }
-        public void AddInput1(List<string> list, string title)
+        public string Input2Title { get; set; }
+        public List<Q> Input2 { get; set; }
+
+        public void AddInput1(List<T> list, string title)
         {
             Input1.AddRange(list);
             Input1Title = title;
         }
 
-        public void AddInput2(List<string> list, string title)
+        public void AddInput2(List<Q> list, string title)
         {
             Input2.AddRange(list);
             Input2Title = title;
@@ -25,20 +26,20 @@ namespace LibStandard.Matplotlib
 
         public TwoListInput()
         {
-            Input1 = new List<string>();
-            Input2 = new List<string>();
+            Input1 = new List<T>();
+            Input2 = new List<Q>();
         }
     }
 
-    public interface ITwoListInput
+    public interface ITwoListInput<T, Q>
     {
-        string Input1Title { get; }
-        List<string> Input1 { get; }
+        string Input1Title { get; set; }
+        List<T> Input1 { get; set; }
 
-        string Input2Title { get; }
-        List<string> Input2 { get; }
+        string Input2Title { get; set; }
+        List<Q> Input2 { get; set; }
 
-        void AddInput1(List<string> list, string title);
-        void AddInput2(List<string> list, string title);
+        void AddInput1(List<T> list, string title);
+        void AddInput2(List<Q> list, string title);
     }
 }
