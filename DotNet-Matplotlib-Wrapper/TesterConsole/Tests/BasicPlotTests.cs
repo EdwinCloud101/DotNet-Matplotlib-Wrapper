@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LibStandard;
 using LibStandard.Matplotlib;
 using LibStandard.Matplotlib.PlotDesign;
@@ -15,15 +16,30 @@ namespace TesterConsole.Tests
         {
             IPythonProcess pythonProcess = new PythonProcess(PythonResources.GetPythonPath());
 
-            IDesign design = new Design();
+            IDesign<int, decimal> design = new Design<int, decimal>();
             design.Title = "This is a title";
             design.TitleFontSize = 16;
             design.OutsideColor = "#979899";
             design.InsideColor = "#d1d1d1";
 
-            var xyPair1 = new XyPair<int, decimal>() {X = {1,2,3,4,5},Y = {0.31m,0.22m,0.22m,0.22m,0.21m}};
-            var xyPair2 = new XyPair<int, decimal>() { X = { 1, 2, 3, 4, 5 }, Y = { 0.03m, 0.03m, 0.03m, 0.02m, 0.02m } };
-            var xyPair3 = new XyPair<int, decimal>() { X = { 1, 2, 3, 4, 5 }, Y = { 0.11m, 0.12m, 0.10m, 0.09m, 0.09m } };
+            design.XTick.Add(new Tuple<int, string>(1, "11/13 \\n Tue"));
+            design.XTick.Add(new Tuple<int, string>(2, "11/14 \\n Wed"));
+            design.XTick.Add(new Tuple<int, string>(3, "11/15 \\n Thu"));
+            design.XTick.Add(new Tuple<int, string>(4, "11/16 \\n Fri"));
+            design.XTick.Add(new Tuple<int, string>(5, "11/17 \\n Sat"));
+
+            design.YTick.Add(new Tuple<decimal, string>(0.0m,"0 %"));
+            design.YTick.Add(new Tuple<decimal, string>(0.1m, "0.1 %"));
+            design.YTick.Add(new Tuple<decimal, string>(0.2m, "0.2 %"));
+            design.YTick.Add(new Tuple<decimal, string>(0.3m, "0.3 %"));
+            design.YTick.Add(new Tuple<decimal, string>(0.4m, "0.4 %"));
+            design.YTick.Add(new Tuple<decimal, string>(0.5m, "0.5 %"));
+
+
+
+            var xyPair1 = new XyPair<int, decimal>() {X = {1,2,3,4,5},Y = {0.31m,0.22m,0.22m,0.22m,0.21m},HasScatter = true};
+            var xyPair2 = new XyPair<int, decimal>() { X = { 1, 2, 3, 4, 5 }, Y = { 0.03m, 0.03m, 0.03m, 0.02m, 0.02m }, HasScatter = true };
+            var xyPair3 = new XyPair<int, decimal>() { X = { 1, 2, 3, 4, 5 }, Y = { 0.11m, 0.12m, 0.10m, 0.09m, 0.09m }, HasScatter = true };
 
             IPlotV2<int, decimal> plot = new PlotV2<int, decimal>(pythonProcess, design);
             plot.AddSource(xyPair1);

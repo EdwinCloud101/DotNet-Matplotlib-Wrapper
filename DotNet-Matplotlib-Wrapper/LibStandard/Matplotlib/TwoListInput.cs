@@ -5,7 +5,7 @@ namespace LibStandard.Matplotlib
 {
     public class TwoListInput<T, Q> : ITwoListInput<T, Q>
     {
-        public IDesign Design { get; set; }
+        public IDesign<T,Q> Design { get; set; }
         public string XLabel { get; set; }
         public List<T> XValues { get; set; }
         public string YLabel { get; set; }
@@ -32,7 +32,7 @@ namespace LibStandard.Matplotlib
 
     public interface ITwoListInput<T, Q>
     {
-        IDesign Design { get; set; }
+        IDesign<T, Q> Design { get; set; }
         string XLabel { get; set; }
         List<T> XValues { get; set; }
 

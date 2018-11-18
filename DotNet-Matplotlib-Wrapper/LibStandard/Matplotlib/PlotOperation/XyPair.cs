@@ -8,6 +8,7 @@ namespace LibStandard.Matplotlib.PlotOperation
     {
         public List<T> X { get; set; }
         public List<Q> Y { get; set; }
+        public bool HasScatter { get; set; }
 
         public XyPair()
         {

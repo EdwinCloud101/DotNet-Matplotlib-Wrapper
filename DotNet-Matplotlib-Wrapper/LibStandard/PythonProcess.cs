@@ -27,6 +27,8 @@ namespace LibStandard
             process.StartInfo = info;
             process.Start();
 
+            string content = "";
+
             using (StreamWriter writer = process.StandardInput)
             {
                 if (writer.BaseStream.CanWrite)
@@ -34,9 +36,12 @@ namespace LibStandard
                     foreach (var item in Instructions)
                     {
                         writer.WriteLine(item);
+                        content += item + Environment.NewLine;
                     }
                 }
             }//using
+
+            File.WriteAllText(@"D:\Temp\1.py", content);
         }
 
         public PythonProcess(string pythonPath)

@@ -13,7 +13,7 @@ namespace LibStandard.Matplotlib.PlotOperation
         }
 
         public List<XyPair<T, Q>> PairSource { get; }
-        public IDesign Design1 { get; }
+        public IDesign<int, decimal> Design1 { get; }
         public IPythonProcess Process { get; }
         public void Show()
         {
@@ -30,11 +30,43 @@ namespace LibStandard.Matplotlib.PlotOperation
                 Process.AddInstruction("ax.set_facecolor(\"" + Design1.InsideColor + "\")");
             }
 
+
+            string content = "";
+            content += "plt.xticks([";
+            foreach (var item in Design1.XTick)
+            {
+                content += item.Item1 + ",";
+            }
+            content = content.TrimEnd(',') + "],[";
+            foreach (var item in Design1.XTick)
+            {
+                content += "\"" + item.Item2 + "\",";
+            }
+            content = content.TrimEnd(',') + "])";
+            Process.AddInstruction(content);
+
+
+            content = "";
+            content += "plt.yticks([";
+            foreach (var item in Design1.YTick)
+            {
+                content += item.Item1 + ",";
+            }
+            content = content.TrimEnd(',') + "],[";
+            foreach (var item in Design1.YTick)
+            {
+                content += "\"" + item.Item2 + "\",";
+            }
+            content = content.TrimEnd(',') + "])";
+            Process.AddInstruction(content);
+
+
+
             int index = 1;
             foreach (var item in PairSource)
             {
                 Process.AddInstruction("x" + index + " = [");
-                string content = "";
+                content = "";
                 foreach (var x in item.X)
                 {
                     content += x + ",";
@@ -51,13 +83,24 @@ namespace LibStandard.Matplotlib.PlotOperation
                 content = content.TrimEnd(',') + "]";
                 Process.AddInstruction(content);
 
+                Process.AddInstruction("for i,item in enumerate(y" + index + "):");
+                Process.AddInstruction("\txP = x" + index + "[i]");
+                Process.AddInstruction("\tyP = y" + index + "[i]");
+                Process.AddInstruction("\tplt.text(xP-0.1,yP+0,str(item)+\"%\",fontsize=11)");
+                //Process.AddInstruction("\tplt.text(xP-0.1,yP+0.01,str(item),fontsize=11)");
+
+                if (item.HasScatter)
+                {
+                    Process.AddInstruction("plt.scatter(x" + index + ",y" + index + ")");
+                }
                 Process.AddInstruction("plt.plot(x" + index + ",y" + index + ")");
+                index++;
             }
             Process.AddInstruction("plt.show()");
             Process.CommitInstruction();
         }
 
-        public PlotV2(IPythonProcess pythonProcess, IDesign design)
+        public PlotV2(IPythonProcess pythonProcess, IDesign<int, decimal> design)
         {
             Design1 = design;
             Process = pythonProcess;
@@ -70,7 +113,7 @@ namespace LibStandard.Matplotlib.PlotOperation
         void AddSource(XyPair<T, Q> xyPair);
 
         List<XyPair<T, Q>> PairSource { get; }
-        IDesign Design1 { get; }
+        IDesign<int, decimal> Design1 { get; }
         IPythonProcess Process { get; }
         void Show();
     }
