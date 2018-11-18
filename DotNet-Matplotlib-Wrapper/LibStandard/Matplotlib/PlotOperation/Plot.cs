@@ -1,13 +1,13 @@
 ﻿namespace LibStandard.Matplotlib
 {
-    public class MatplotLibSingleCall<T, Q> : IMatplotLibSingleCall<T, Q>
+    public class Plot<T, Q> : IPlot<T, Q>
     {
         public IPythonProcess PythonProcess { get; private set; }
 
         public void Plot2Lists(ITwoListInput<T, Q> twoListInput)
         {
-            var xAxis = twoListInput.Input1;
-            var yAxis = twoListInput.Input2;
+            var xAxis = twoListInput.XValues;
+            var yAxis = twoListInput.YValues;
 
             PythonProcess.AddInstruction("python");
             PythonProcess.AddInstruction("import matplotlib.pyplot as plt");
@@ -30,24 +30,30 @@
             yContent += "]";
             PythonProcess.AddInstruction(yContent);
 
+
+
+            PythonProcess.AddInstruction("fig = plt.figure(facecolor=\"" + twoListInput.Design.OutsideColor + "\")");
+            PythonProcess.AddInstruction("ax = plt.gca()");
+            PythonProcess.AddInstruction("ax.set_facecolor(\"" + twoListInput.Design.InsideColor + "\")");
+
+            PythonProcess.AddInstruction("plt.title(\"" + twoListInput.Design.Title + "\",fontsize=" + twoListInput.Design.TitleFontSize + ")");
+            PythonProcess.AddInstruction("plt.xlabel(\"" + twoListInput.XLabel + "\")");
+            PythonProcess.AddInstruction("plt.ylabel(\"" + twoListInput.YLabel + "\")");
+
             PythonProcess.AddInstruction("plt.scatter(arr1,arr2)");
             PythonProcess.AddInstruction("plt.plot(arr1,arr2)");
-
-            PythonProcess.AddInstruction("plt.title(\"" + twoListInput.Title + "\")");
-            PythonProcess.AddInstruction("plt.xlabel(\"" + twoListInput.Input1Title + "\")");
-            PythonProcess.AddInstruction("plt.ylabel(\"" + twoListInput.Input2Title + "\")");
 
             PythonProcess.AddInstruction("plt.show()");
             PythonProcess.CommitInstruction();
         }
 
-        public MatplotLibSingleCall(IPythonProcess pythonProcess)
+        public Plot(IPythonProcess pythonProcess)
         {
             PythonProcess = pythonProcess;
         }
     }
 
-    public interface IMatplotLibSingleCall<T, Q>
+    public interface IPlot<T, Q>
     {
         IPythonProcess PythonProcess { get; }
         void Plot2Lists(ITwoListInput<T, Q> twoListInput);

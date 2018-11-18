@@ -1,45 +1,45 @@
 ﻿using System.Collections.Generic;
+using LibStandard.Matplotlib.PlotDesign;
 
 namespace LibStandard.Matplotlib
 {
     public class TwoListInput<T, Q> : ITwoListInput<T, Q>
     {
-        public string Title { get; set; }
-        public string Input1Title { get; set; }
-        public List<T> Input1 { get; set; }
+        public IDesign Design { get; set; }
+        public string XLabel { get; set; }
+        public List<T> XValues { get; set; }
+        public string YLabel { get; set; }
+        public List<Q> YValues { get; set; }
 
-        public string Input2Title { get; set; }
-        public List<Q> Input2 { get; set; }
-
-        public void AddInput1(List<T> list, string title)
+        public void AddX(List<T> list, string title)
         {
-            Input1.AddRange(list);
-            Input1Title = title;
+            XValues.AddRange(list);
+            XLabel = title;
         }
 
-        public void AddInput2(List<Q> list, string title)
+        public void AddY(List<Q> list, string title)
         {
-            Input2.AddRange(list);
-            Input2Title = title;
+            YValues.AddRange(list);
+            YLabel = title;
         }
 
         public TwoListInput()
         {
-            Input1 = new List<T>();
-            Input2 = new List<Q>();
+            XValues = new List<T>();
+            YValues = new List<Q>();
         }
     }
 
     public interface ITwoListInput<T, Q>
     {
-        string Title { get; set; }
-        string Input1Title { get; set; }
-        List<T> Input1 { get; set; }
+        IDesign Design { get; set; }
+        string XLabel { get; set; }
+        List<T> XValues { get; set; }
 
-        string Input2Title { get; set; }
-        List<Q> Input2 { get; set; }
+        string YLabel { get; set; }
+        List<Q> YValues { get; set; }
 
-        void AddInput1(List<T> list, string title);
-        void AddInput2(List<Q> list, string title);
+        void AddX(List<T> list, string title);
+        void AddY(List<Q> list, string title);
     }
 }
