@@ -7,18 +7,18 @@ namespace LibStandard.Matplotlib.PlotDesign
     public class Title : ITitle
     {
         public string Text { get; set; }
-        public short Font { get; set; }
+        public short FontSize { get; set; }
 
-        public Title(string text, short font)
+        public Title(string text, short fontSize)
         {
             Text = text;
-            Font = font;
+            FontSize = fontSize;
         }
     }
 
     public interface ITitle
     {
         string Text { get; set; }
-        short Font { get; set; }
+        short FontSize { get; set; }
     }
 }

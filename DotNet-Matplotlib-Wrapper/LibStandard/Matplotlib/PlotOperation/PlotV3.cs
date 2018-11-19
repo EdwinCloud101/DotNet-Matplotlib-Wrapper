@@ -31,7 +31,11 @@ namespace LibStandard.Matplotlib.PlotOperation
             Composer.WritePython();
 
             Composer.WriteImportMatplotLib();
+
             Composer.WritePlotColor(Design1.PlotColor);
+            Composer.WriteGrid(Design1.HasGrid);
+            Composer.WriteTitle(Design1.Title);
+            Composer.WriteTicks(Design1.XTick, Design1.YTick);
 
             Composer.WriteXYPair(PairSource);
             Composer.WritePlotShow();

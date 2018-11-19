@@ -11,7 +11,7 @@ fig = plt.figure(facecolor="#979899")
 ax = plt.gca()
 ax.set_facecolor("#d1d1d1")
 
-plt.grid(False)
+plt.grid(true)
 plt.title("Styxhexenhammer666 vs Stefan Molyneux View Growth Rate- 2018\n",fontsize=16)
 plt.xlabel("")
 plt.ylabel("Groth Rate in %")

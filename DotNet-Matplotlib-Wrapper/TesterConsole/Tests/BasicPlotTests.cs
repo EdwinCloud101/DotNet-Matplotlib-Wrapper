@@ -42,7 +42,7 @@ namespace TesterConsole.Tests
                 new Tuple<decimal, string>(0.5m, "0.5 %")
             });
 
-            IDesign<int, decimal> design = new Design<int, decimal>(title, colors, xTick, yTick);
+            IDesign<int, decimal> design = new Design<int, decimal>(title, colors, xTick, yTick,true);
 
             var xyPair1 = new XyPair<int, decimal>() { X = { 1, 2, 3, 4, 5 }, Y = { 0.31m, 0.22m, 0.22m, 0.22m, 0.21m }, HasScatter = true };
             var xyPair2 = new XyPair<int, decimal>() { X = { 1, 2, 3, 4, 5 }, Y = { 0.03m, 0.03m, 0.03m, 0.02m, 0.02m }, HasScatter = true };

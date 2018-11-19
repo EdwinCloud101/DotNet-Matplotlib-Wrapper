@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using LibStandard.Matplotlib.PlotDesign;
+using LibStandard.Matplotlib.PlotDesign.TickDesign;
 
 namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
 {
@@ -38,6 +39,55 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             }
         }
 
+        public void WriteGrid(bool grid)
+        {
+            Process.AddInstruction("plt.grid(" + (grid ? "True" : "False") + ")");
+        }
+
+        public void WriteTitle(ITitle title)
+        {
+            Process.AddInstruction("plt.title(\"" + title.Text + "\",fontsize=" + title.FontSize + ")");
+        }
+
+        public void WriteTicks(IXTick<int> xTick, IYTick<decimal> yTick)
+        {
+            string content = "";
+            content += "plt.xticks([";
+            foreach (var item in xTick.Values)
+            {
+                content += item.Item1 + ",";
+            }
+
+            content = content.TrimEnd(',') + "],[";
+
+            foreach (var item in xTick.Values)
+            {
+                content += "\"" + item.Item2 + "\",";
+            }
+            content = content.TrimEnd(',') + "])";
+            Process.AddInstruction(content);
+
+
+            content = "";
+            content += "plt.yticks([";
+            foreach (var item in yTick.Values)
+            {
+                content += item.Item1 + ",";
+            }
+
+            content = content.TrimEnd(',') + "],[";
+
+            foreach (var item in yTick.Values)
+            {
+                content += "\"" + item.Item2 + "\",";
+            }
+
+            content = content.TrimEnd(',') + "])";
+
+
+            Process.AddInstruction(content);
+        }
+
         public void WritePlotShow()
         {
             Process.AddInstruction("plt.show()");
@@ -50,8 +100,7 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
 
             foreach (var item in xyPair)
             {
-                Process.AddInstruction("x" + index + " = [");
-                content = "";
+                content = "x" + index + " = [";
                 foreach (var x in item.X)
                 {
                     content += x + ",";
@@ -59,8 +108,7 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
                 content = content.TrimEnd(',') + "]";
                 Process.AddInstruction(content);
 
-                content = "";
-                Process.AddInstruction("y" + index + " = [");
+                content = "y" + index + " = [";
                 foreach (var y in item.Y)
                 {
                     content += y + ",";
@@ -90,7 +138,11 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
         void WritePython();
         void WriteImportMatplotLib();
         void WritePlotColor(IPlotColor color);
-        void WritePlotShow();
+        void WriteGrid(bool grid);
+        void WriteTitle(ITitle title);
+        void WriteTicks(IXTick<int> xTick, IYTick<decimal> yTick);
         void WriteXYPair(List<XyPair<T, Q>> xyPair);
+        void WritePlotShow();
+
     }
 }

@@ -7,6 +7,7 @@ namespace LibStandard.Matplotlib.PlotDesign
 {
     public class Design<T, Q> : IDesign<T, Q>
     {
+        public bool HasGrid { get; set; }
         public ITitle Title { get; set; }
         public IPlotColor PlotColor { get; set; }
         public IXTick<int> XTick { get; set; }
@@ -22,8 +23,9 @@ namespace LibStandard.Matplotlib.PlotDesign
             PlotColor = plotColor;
         }
 
-        public Design(ITitle title, IPlotColor plotColor, IXTick<int> xTick, IYTick<decimal> yTick) : this(title, plotColor)
+        public Design(ITitle title, IPlotColor plotColor, IXTick<int> xTick, IYTick<decimal> yTick, bool hasGrid) : this(title, plotColor)
         {
+            HasGrid = hasGrid;
             PlotColor = plotColor;
             XTick = xTick;
             YTick = yTick;
@@ -32,6 +34,7 @@ namespace LibStandard.Matplotlib.PlotDesign
 
     public interface IDesign<T, Q>
     {
+        bool HasGrid { get; set; }
         ITitle Title { get; set; }
         IPlotColor PlotColor { get; set; }
         IXTick<int> XTick { get; set; }
