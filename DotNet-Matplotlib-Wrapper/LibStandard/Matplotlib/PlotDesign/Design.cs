@@ -1,32 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using LibStandard.Matplotlib.PlotDesign.TickDesign;
 
 namespace LibStandard.Matplotlib.PlotDesign
 {
-    public class Design<T, Q> : IDesign<T,Q>
+    public class Design<T, Q> : IDesign<T, Q>
     {
-        public string Title { get; set; }
-        public short TitleFontSize { get; set; }
-        public string OutsideColor { get; set; }
-        public string InsideColor { get; set; }
-        public List<Tuple<T, string>> XTick { get; set; }
-        public List<Tuple<Q, string>> YTick { get; set; }
+        public ITitle Title { get; set; }
+        public IPlotColor PlotColor { get; set; }
+        public IXTick<int> XTick { get; set; }
+        public IYTick<decimal> YTick { get; set; }
 
-        public Design()
+        public Design(ITitle title)
         {
-            XTick = new List<Tuple<T, string>>();
-            YTick = new List<Tuple<Q, string>>();
+            Title = title;
+        }
+
+        public Design(ITitle title, IPlotColor plotColor) : this(title)
+        {
+            PlotColor = plotColor;
+        }
+
+        public Design(ITitle title, IPlotColor plotColor, IXTick<int> xTick, IYTick<decimal> yTick) : this(title, plotColor)
+        {
+            PlotColor = plotColor;
+            XTick = xTick;
+            YTick = yTick;
         }
     }
 
     public interface IDesign<T, Q>
     {
-        string Title { get; set; }
-        short TitleFontSize { get; set; }
-        string OutsideColor { get; set; }
-        string InsideColor { get; set; }
-        List<Tuple<T, string>> XTick { get; set; }
-        List<Tuple<Q, string>> YTick { get; set; }
+        ITitle Title { get; set; }
+        IPlotColor PlotColor { get; set; }
+        IXTick<int> XTick { get; set; }
+        IYTick<decimal> YTick { get; set; }
     }
 }

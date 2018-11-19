@@ -32,19 +32,19 @@
 
 
 
-            PythonProcess.AddInstruction("fig = plt.figure(facecolor=\"" + twoListInput.Design.OutsideColor + "\")");
-            PythonProcess.AddInstruction("ax = plt.gca()");
-            PythonProcess.AddInstruction("ax.set_facecolor(\"" + twoListInput.Design.InsideColor + "\")");
+            //PythonProcess.AddInstruction("fig = plt.figure(facecolor=\"" + twoListInput.Design.OutsideColor + "\")");
+            //PythonProcess.AddInstruction("ax = plt.gca()");
+            //PythonProcess.AddInstruction("ax.set_facecolor(\"" + twoListInput.Design.InsideColor + "\")");
 
-            PythonProcess.AddInstruction("plt.title(\"" + twoListInput.Design.Title + "\",fontsize=" + twoListInput.Design.TitleFontSize + ")");
-            PythonProcess.AddInstruction("plt.xlabel(\"" + twoListInput.XLabel + "\")");
-            PythonProcess.AddInstruction("plt.ylabel(\"" + twoListInput.YLabel + "\")");
+            //PythonProcess.AddInstruction("plt.title(\"" + twoListInput.Design.Title + "\",fontsize=" + twoListInput.Design.TitleFontSize + ")");
+            //PythonProcess.AddInstruction("plt.xlabel(\"" + twoListInput.XLabel + "\")");
+            //PythonProcess.AddInstruction("plt.ylabel(\"" + twoListInput.YLabel + "\")");
 
-            PythonProcess.AddInstruction("plt.scatter(arr1,arr2)");
-            PythonProcess.AddInstruction("plt.plot(arr1,arr2)");
+            //PythonProcess.AddInstruction("plt.scatter(arr1,arr2)");
+            //PythonProcess.AddInstruction("plt.plot(arr1,arr2)");
 
-            PythonProcess.AddInstruction("plt.show()");
-            PythonProcess.CommitInstruction();
+            //PythonProcess.AddInstruction("plt.show()");
+            //PythonProcess.CommitInstruction();
         }
 
         public Plot(IPythonProcess pythonProcess)
