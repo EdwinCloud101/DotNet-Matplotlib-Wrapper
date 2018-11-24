@@ -12,6 +12,11 @@ namespace LibStandard.Matplotlib.PlotDesign.TickDesign
         {
             Values = values;
         }
+
+        public YTick()
+        {
+            
+        }
     }
 
     public interface IYTick<T> : ITick<T>

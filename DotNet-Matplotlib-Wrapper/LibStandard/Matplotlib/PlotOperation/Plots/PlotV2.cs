@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using LibStandard.Matplotlib.PlotDesign;
+using LibStandard.Matplotlib.PlotOperation.Pairs;
 
 namespace LibStandard.Matplotlib.PlotOperation
 {

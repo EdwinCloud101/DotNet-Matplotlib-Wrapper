@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using LibStandard.Matplotlib.PlotDesign;
 using LibStandard.Matplotlib.PlotOperation.CommandComposer;
+using LibStandard.Matplotlib.PlotOperation.Pairs;
 
-namespace LibStandard.Matplotlib.PlotOperation
+namespace LibStandard.Matplotlib.PlotOperation.Plots
 {
     public class PlotV3<T, Q> : IPlotV3<T, Q>
     {
         public List<XyPair<T, Q>> PairSource { get; }
-        public IDesign<int, decimal> Design1 { get; }
+        public IDesign<T, Q> Design1 { get; }
         public IPythonProcess Process { get; }
         public IGeneralComposer<T, Q> Composer { get; }
 
-        public PlotV3(IPythonProcess pythonProcess, IDesign<int, decimal> design, IGeneralComposer<T, Q> composer)
+        public PlotV3(IPythonProcess pythonProcess, IDesign<T, Q> design, IGeneralComposer<T, Q> composer)
         {
             Design1 = design;
             Process = pythonProcess;
@@ -29,13 +28,12 @@ namespace LibStandard.Matplotlib.PlotOperation
         public void Show()
         {
             Composer.WritePython();
-
-            Composer.WriteImportMatplotLib();
-
+            Composer.WriteImportModules();
             Composer.WritePlotColor(Design1.PlotColor);
             Composer.WriteGrid(Design1.HasGrid);
             Composer.WriteTitle(Design1.Title);
-            Composer.WriteTicks(Design1.XTick, Design1.YTick);
+
+            Composer.WriteTicks(Design1.XTick, Design1.YTick, PairSource);
 
             Composer.WriteXYPair(PairSource);
             Composer.WritePlotShow();
@@ -47,7 +45,7 @@ namespace LibStandard.Matplotlib.PlotOperation
     {
         void AddSource(XyPair<T, Q> xyPair);
         List<XyPair<T, Q>> PairSource { get; }
-        IDesign<int, decimal> Design1 { get; }
+        IDesign<T, Q> Design1 { get; }
         IPythonProcess Process { get; }
         IGeneralComposer<T, Q> Composer { get; }
         void Show();

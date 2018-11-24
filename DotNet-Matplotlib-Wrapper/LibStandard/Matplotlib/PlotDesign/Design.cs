@@ -10,7 +10,7 @@ namespace LibStandard.Matplotlib.PlotDesign
         public bool HasGrid { get; set; }
         public ITitle Title { get; set; }
         public IPlotColor PlotColor { get; set; }
-        public IXTick<int> XTick { get; set; }
+        public IXTick<DateTime> XTick { get; set; }
         public IYTick<decimal> YTick { get; set; }
 
         public Design(ITitle title)
@@ -23,7 +23,12 @@ namespace LibStandard.Matplotlib.PlotDesign
             PlotColor = plotColor;
         }
 
-        public Design(ITitle title, IPlotColor plotColor, IXTick<int> xTick, IYTick<decimal> yTick, bool hasGrid) : this(title, plotColor)
+        public Design(ITitle title, IPlotColor plotColor, bool hasGrid) : this(title, plotColor)
+        {
+            HasGrid = hasGrid;
+        }
+
+        public Design(ITitle title, IPlotColor plotColor, IXTick<DateTime> xTick, IYTick<decimal> yTick, bool hasGrid) : this(title, plotColor)
         {
             HasGrid = hasGrid;
             PlotColor = plotColor;
@@ -37,7 +42,7 @@ namespace LibStandard.Matplotlib.PlotDesign
         bool HasGrid { get; set; }
         ITitle Title { get; set; }
         IPlotColor PlotColor { get; set; }
-        IXTick<int> XTick { get; set; }
+        IXTick<DateTime> XTick { get; set; }
         IYTick<decimal> YTick { get; set; }
     }
 }
