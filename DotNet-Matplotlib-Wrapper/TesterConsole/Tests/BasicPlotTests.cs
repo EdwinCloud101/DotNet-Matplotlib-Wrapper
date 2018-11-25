@@ -17,9 +17,34 @@ namespace TesterConsole.Tests
     {
 
         [Test]
+        public void DateXDLongYTest()
+        {
+            var xyPair1 = new XyPair<DateTime, long>("Some Legend A");
+            xyPair1.AddX(new DateTime(2018, 11, 20));
+            xyPair1.AddX(new DateTime(2018, 11, 21));
+            xyPair1.AddX(new DateTime(2018, 11, 22));
+            xyPair1.AddY(18);
+            xyPair1.AddY(32);
+            xyPair1.AddY(21);
+            xyPair1.HasScatter = true;
+
+            IPythonProcess pythonProcess = new PythonProcess(PythonResources.GetPythonPath());
+            ITitle title = new Title("This is a title", 32);
+            IPlotColor colors = new PlotColor();
+            colors.OutsideColor = "#979899";
+            colors.InsideColor = "#d1d1d1";
+
+            IDesign<DateTime, long> design = new Design<DateTime, long>(title, colors, true);
+            IGeneralComposer<DateTime, long> composer = new GeneralComposer<DateTime, long>(pythonProcess);
+            IPlotV3<DateTime, long> plot = new PlotV3<DateTime, long>(pythonProcess, design, composer);
+            plot.AddSource(xyPair1);
+            plot.Show();
+        }
+
+        [Test]
         public void DateXDecimalYTest()
         {
-            var xyPair1 = new XyPair<DateTime, decimal>();
+            var xyPair1 = new XyPair<DateTime, decimal>("Some Legend A");
             xyPair1.AddX(new DateTime(2018, 11, 20));
             xyPair1.AddX(new DateTime(2018, 11, 21));
             xyPair1.AddX(new DateTime(2018, 11, 22));

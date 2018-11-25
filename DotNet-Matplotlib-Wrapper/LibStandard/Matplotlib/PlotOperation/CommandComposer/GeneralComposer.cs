@@ -52,6 +52,85 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             Process.AddInstruction("plt.title(\"" + title.Text + "\",fontsize=" + title.FontSize + ")");
         }
 
+        public void WriteTicksLong(IXTick<DateTime> xTick, IYTick<long> yTick, List<XyPair<T, Q>> xyPair)
+        {
+            DateTime minX = DateTime.MaxValue;
+            DateTime maxX = DateTime.MinValue;
+            long minY = long.MaxValue;
+            long maxY = 0;
+
+            foreach (var item in xyPair)
+            {
+                #region minmax
+
+                foreach (var xItem in item.X)
+                {
+                    DateTime date = Convert.ToDateTime(xItem);
+                    if (date < minX)
+                    {
+                        minX = date;
+                    }
+                    if (date > maxX)
+                    {
+                        maxX = date;
+                    }
+                }
+
+                foreach (var yItem in item.Y)
+                {
+                    if (Convert.ToDecimal(yItem) < minY)
+                    {
+                        minY = Convert.ToInt64(yItem);
+                    }
+                    if (Convert.ToDecimal(yItem) > maxY)
+                    {
+                        maxY = Convert.ToInt64(yItem);
+                    }
+                }
+                #endregion
+            }
+
+            #region X
+            string leftContent = "";
+            string rightContent = "";
+
+            leftContent += "plt.xticks([";
+            DateTime aux = minX;
+            while (aux <= maxX)
+            {
+                leftContent += "datetime.date(" + aux.ToString("yyyy,MM,dd") + "),";
+                rightContent += "\"" + aux.ToString("MM/dd") + "\",";
+                aux = aux.Add(new TimeSpan(1, 0, 0, 0));
+            }
+            leftContent = leftContent.TrimEnd(',') + "],[" + rightContent.TrimEnd(',') + "])";
+            Process.AddInstruction(leftContent);
+            #endregion
+
+            if (minY > 0)
+            {
+                minY = 0;
+            }
+
+            leftContent = "";
+            rightContent = "";
+
+            leftContent += "plt.yticks([";
+            while (minY <= maxY)
+            {
+                leftContent += minY + ",";
+                rightContent += "\"" + minY + "\",";
+                minY += 10000000;
+            }
+
+            //Again so it reaches the top
+            minY += 10000000;
+            rightContent += "\"" + minY + "\",";
+
+            leftContent = leftContent.TrimEnd(',') + "],[" + rightContent.TrimEnd(',') + "])";
+            Process.AddInstruction(leftContent);
+        }
+
+
         public void WriteTicks(IXTick<DateTime> xTick, IYTick<decimal> yTick, List<XyPair<T, Q>> xyPair)
         {
             DateTime minX = DateTime.MaxValue;
@@ -106,8 +185,10 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             Process.AddInstruction(leftContent);
             #endregion
 
-            minY = 0.0m;
-            maxY = 1.0m;
+            if (minY > 0)
+            {
+                minY = 0m;
+            }
 
             leftContent = "";
             rightContent = "";
@@ -121,7 +202,79 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             }
             leftContent = leftContent.TrimEnd(',') + "],[" + rightContent.TrimEnd(',') + "])";
             Process.AddInstruction(leftContent);
+        }
 
+        public void WriteTicks_old(IXTick<DateTime> xTick, IYTick<decimal> yTick, List<XyPair<T, Q>> xyPair)
+        {
+            DateTime minX = DateTime.MaxValue;
+            DateTime maxX = DateTime.MinValue;
+            decimal minY = int.MaxValue;
+            decimal maxY = 0;
+
+            foreach (var item in xyPair)
+            {
+                #region minmax
+
+                foreach (var xItem in item.X)
+                {
+                    DateTime date = Convert.ToDateTime(xItem);
+                    if (date < minX)
+                    {
+                        minX = date;
+                    }
+                    if (date > maxX)
+                    {
+                        maxX = date;
+                    }
+                }
+
+                foreach (var yItem in item.Y)
+                {
+                    if (Convert.ToDecimal(yItem) < minY)
+                    {
+                        minY = Convert.ToDecimal(yItem);
+                    }
+                    if (Convert.ToDecimal(yItem) > maxY)
+                    {
+                        maxY = Convert.ToDecimal(yItem);
+                    }
+                }
+                #endregion
+            }
+
+            #region X
+            string leftContent = "";
+            string rightContent = "";
+
+            leftContent += "plt.xticks([";
+            DateTime aux = minX;
+            while (aux <= maxX)
+            {
+                leftContent += "datetime.date(" + aux.ToString("yyyy,MM,dd") + "),";
+                rightContent += "\"" + aux.ToString("MM/dd") + "\",";
+                aux = aux.Add(new TimeSpan(1, 0, 0, 0));
+            }
+            leftContent = leftContent.TrimEnd(',') + "],[" + rightContent.TrimEnd(',') + "])";
+            Process.AddInstruction(leftContent);
+            #endregion
+
+            if (minY > 0)
+            {
+                minY = 0m;
+            }
+
+            leftContent = "";
+            rightContent = "";
+
+            leftContent += "plt.yticks([";
+            while (minY <= maxY)
+            {
+                leftContent += minY + ",";
+                rightContent += "\"" + minY + "\",";
+                minY += 0.1m;
+            }
+            leftContent = leftContent.TrimEnd(',') + "],[" + rightContent.TrimEnd(',') + "])";
+            Process.AddInstruction(leftContent);
         }
 
         public void WriteTicks(IXTick<DateTime> xTick, IYTick<decimal> yTick)
@@ -203,11 +356,12 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
                 Process.AddInstruction("\tyP = y" + index + "[i]");
                 Process.AddInstruction("\tplt.text(xP,yP,str(item)+\"%\",fontsize=11)");
 
-                Process.AddInstruction("plt.plot(x" + index + ",y" + index + ")");
+                Process.AddInstruction("plt.plot(x" + index + ",y" + index + $",label=\"{item.Legend}\")");
                 if (item.HasScatter)
                 {
                     Process.AddInstruction("plt.scatter(x" + index + ",y" + index + ")");
                 }
+                Process.AddInstruction("plt.legend()");
                 index++;
             }
         }
@@ -225,5 +379,6 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
         void WriteTicks(IXTick<DateTime> xTick, IYTick<decimal> yTick, List<XyPair<T, Q>> xyPair);
         void WriteXYPair(List<XyPair<T, Q>> xyPair);
         void WritePlotShow();
+        void WriteTicksLong(IXTick<DateTime> xTick, IYTick<long> yTick, List<XyPair<T, Q>> xyPair);
     }
 }
