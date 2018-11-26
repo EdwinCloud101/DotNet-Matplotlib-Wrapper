@@ -34,7 +34,7 @@ namespace TesterConsole.Tests
             colors.OutsideColor = "#979899";
             colors.InsideColor = "#d1d1d1";
 
-            IDesign<DateTime, long> design = new Design<DateTime, long>(title, colors, true);
+            IDesign<DateTime, long> design = new Design<DateTime, long>(title, colors, true, 16m,"▬","aaa","bbbb");
             IGeneralComposer<DateTime, long> composer = new GeneralComposer<DateTime, long>(pythonProcess);
             IPlotV3<DateTime, long> plot = new PlotV3<DateTime, long>(pythonProcess, design, composer);
             plot.AddSource(xyPair1);
@@ -59,7 +59,7 @@ namespace TesterConsole.Tests
             colors.OutsideColor = "#979899";
             colors.InsideColor = "#d1d1d1";
 
-            IDesign<DateTime, decimal> design = new Design<DateTime, decimal>(title, colors, true);
+            IDesign<DateTime, decimal> design = new Design<DateTime, decimal>(title, colors, true, 0.5m,"&","cccc","dddd");
             IGeneralComposer<DateTime, decimal> composer = new GeneralComposer<DateTime, decimal>(pythonProcess);
             IPlotV3<DateTime, decimal> plot = new PlotV3<DateTime, decimal>(pythonProcess, design, composer);
             plot.AddSource(xyPair1);

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LibStandard.Matplotlib.PlotDesign;
+using LibStandard.Matplotlib.PlotDesign.TickDesign;
 using LibStandard.Matplotlib.PlotOperation.CommandComposer;
 using LibStandard.Matplotlib.PlotOperation.Pairs;
 
@@ -32,10 +34,12 @@ namespace LibStandard.Matplotlib.PlotOperation.Plots
             Composer.WritePlotColor(Design1.PlotColor);
             Composer.WriteGrid(Design1.HasGrid);
             Composer.WriteTitle(Design1.Title);
+            Composer.WriteLabelXY(Design1.XLabel, Design1.YLabel);
 
-            Composer.WriteTicks(Design1.XTick, Design1.YTick, PairSource);
+            //Composer.WriteTicks(Design1.XTick, Design1.YTick, PairSource);
+            Composer.WriteTicks((IXTick<DateTime>)Design1.XTick, (IYTick<decimal>)Design1.YTick, PairSource, Design1.IncreaseTickRate);
 
-            Composer.WriteXYPair(PairSource);
+            Composer.WriteXYPair(PairSource, Design1.ScatterSuffix);
             Composer.WritePlotShow();
             Process.CommitInstruction();
         }

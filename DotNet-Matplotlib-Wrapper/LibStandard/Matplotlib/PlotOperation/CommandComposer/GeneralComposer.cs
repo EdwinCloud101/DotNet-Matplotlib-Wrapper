@@ -24,7 +24,7 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
         public void WriteImportModules()
         {
             Process.AddInstruction("import matplotlib.pyplot as plt");
-            Process.AddInstruction("import pandas as pd");
+            //Process.AddInstruction("import pandas as pd");
             Process.AddInstruction("import datetime");
         }
 
@@ -130,8 +130,13 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             Process.AddInstruction(leftContent);
         }
 
+        public void WriteLabelXY(string xLabel, string yLabel)
+        {
+            Process.AddInstruction($"plt.xlabel(\"{xLabel}\")");
+            Process.AddInstruction($"plt.ylabel(\"{yLabel}\")");
+        }
 
-        public void WriteTicks(IXTick<DateTime> xTick, IYTick<decimal> yTick, List<XyPair<T, Q>> xyPair)
+        public void WriteTicks(IXTick<DateTime> xTick, IYTick<decimal> yTick, List<XyPair<T, Q>> xyPair, decimal increaseTickRate)
         {
             DateTime minX = DateTime.MaxValue;
             DateTime maxX = DateTime.MinValue;
@@ -194,12 +199,21 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             rightContent = "";
 
             leftContent += "plt.yticks([";
-            while (minY <= maxY)
+
+            for (minY = 0m; minY < (maxY + increaseTickRate); minY += increaseTickRate)
             {
                 leftContent += minY + ",";
-                rightContent += "\"" + minY + "\",";
-                minY += 0.1m;
+                rightContent += "\"" + minY + "\",";//add sufix
             }
+
+            //while (minY <= maxY)
+            //{
+            //    leftContent += minY + ",";
+            //    rightContent += "\"" + minY + "\",";
+            //    minY += increaseTickRate;
+            //}
+
+
             leftContent = leftContent.TrimEnd(',') + "],[" + rightContent.TrimEnd(',') + "])";
             Process.AddInstruction(leftContent);
         }
@@ -324,10 +338,12 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
 
         public void WritePlotShow()
         {
+            Process.AddInstruction("canvas = ax.figure.canvas");
+            Process.AddInstruction("canvas.manager.window.move(-1920, 100)");
             Process.AddInstruction("plt.show()");
         }
 
-        public void WriteXYPair(List<XyPair<T, Q>> xyPair)
+        public void WriteXYPair(List<XyPair<T, Q>> xyPair, string scatterSuffix)
         {
             int index = 1;
             string content = "";
@@ -354,7 +370,9 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
                 Process.AddInstruction("for i,item in enumerate(y" + index + "):");
                 Process.AddInstruction("\txP = x" + index + "[i]");
                 Process.AddInstruction("\tyP = y" + index + "[i]");
-                Process.AddInstruction("\tplt.text(xP,yP,str(item)+\"%\",fontsize=11)");
+
+                //Process.AddInstruction("\tplt.text(xP,yP,str(item)+\"" + scatterSuffix + "\",fontsize=11)");
+                Process.AddInstruction("\tplt.text(xP, yP, \"{:,}\".format(item) + \"" + scatterSuffix + "\", fontsize=11)");
 
                 Process.AddInstruction("plt.plot(x" + index + ",y" + index + $",label=\"{item.Legend}\")");
                 if (item.HasScatter)
@@ -376,9 +394,10 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
         void WriteGrid(bool grid);
         void WriteTitle(ITitle title);
         void WriteTicks(IXTick<DateTime> xTick, IYTick<decimal> yTick);
-        void WriteTicks(IXTick<DateTime> xTick, IYTick<decimal> yTick, List<XyPair<T, Q>> xyPair);
-        void WriteXYPair(List<XyPair<T, Q>> xyPair);
+        void WriteTicks(IXTick<DateTime> xTick, IYTick<decimal> yTick, List<XyPair<T, Q>> xyPair, decimal increaseTickRate);
+        void WriteXYPair(List<XyPair<T, Q>> xyPair, string scatterSuffix);
         void WritePlotShow();
         void WriteTicksLong(IXTick<DateTime> xTick, IYTick<long> yTick, List<XyPair<T, Q>> xyPair);
+        void WriteLabelXY(string xLabel, string yLabel);
     }
 }
