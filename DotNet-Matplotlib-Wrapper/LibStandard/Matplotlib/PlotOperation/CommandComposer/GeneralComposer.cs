@@ -98,9 +98,9 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             DateTime aux = minX;
             while (aux <= maxX)
             {
-                leftContent += "datetime.date(" + aux.ToString("yyyy,MM,dd") + "),";
-                rightContent += "\"" + aux.ToString("MM/dd") + "\",";
-                aux = aux.Add(new TimeSpan(1, 0, 0, 0));
+                leftContent += "datetime.datetime.combine(datetime.date(" + aux.ToString("yyyy,M,d") + "), datetime.time(" + aux.ToString("H,m,s") + ")),";
+                rightContent += "\"" + aux.ToString("M/d") + "\\n" + aux.ToString("H:m") + "\",";
+                aux = aux.Add(new TimeSpan(0, 2, 0, 0));
             }
             leftContent = leftContent.TrimEnd(',') + "],[" + rightContent.TrimEnd(',') + "])";
             Process.AddInstruction(leftContent);
@@ -182,9 +182,10 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             DateTime aux = minX;
             while (aux <= maxX)
             {
-                leftContent += "datetime.date(" + aux.ToString("yyyy,MM,dd") + "),";
-                rightContent += "\"" + aux.ToString("MM/dd") + "\",";
-                aux = aux.Add(new TimeSpan(1, 0, 0, 0));
+                //leftContent += "datetime.date(" + aux.ToString("yyyy,MM,d,H,m,s") + "),";
+                leftContent += "datetime.datetime.combine(datetime.date(" + aux.ToString("yyyy,M,d") + "), datetime.time(" + aux.ToString("H,m,s") + ")),";
+                rightContent += "\"" + aux.ToString("M/d") + "\\n" + aux.ToString("H:m") + "\",";
+                aux = aux.Add(new TimeSpan(0, 2, 0, 0));
             }
             leftContent = leftContent.TrimEnd(',') + "],[" + rightContent.TrimEnd(',') + "])";
             Process.AddInstruction(leftContent);
@@ -203,7 +204,8 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             for (minY = 0m; minY < (maxY + increaseTickRate); minY += increaseTickRate)
             {
                 leftContent += minY + ",";
-                rightContent += "\"" + minY + "\",";//add sufix
+                rightContent += "\"{:,}\".format(" + minY + "),";//add sufix
+                //Process.AddInstruction("\tplt.text(xP, yP, \"{:,}\".format(item) + \"" + scatterSuffix + "\", fontsize=11)");
             }
 
             //while (minY <= maxY)
@@ -264,9 +266,9 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             DateTime aux = minX;
             while (aux <= maxX)
             {
-                leftContent += "datetime.date(" + aux.ToString("yyyy,MM,dd") + "),";
-                rightContent += "\"" + aux.ToString("MM/dd") + "\",";
-                aux = aux.Add(new TimeSpan(1, 0, 0, 0));
+                leftContent += "datetime.datetime.combine(datetime.date(" + aux.ToString("yyyy,M,d") + "), datetime.time(" + aux.ToString("H,m,s") + ")),";
+                rightContent += "\"" + aux.ToString("M/d") + "\\n" + aux.ToString("H:m") + "\",";
+                aux = aux.Add(new TimeSpan(0, 2, 0, 0));
             }
             leftContent = leftContent.TrimEnd(',') + "],[" + rightContent.TrimEnd(',') + "])";
             Process.AddInstruction(leftContent);
@@ -353,7 +355,8 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
                 content = "x" + index + " = [";
                 foreach (var x in item.X)
                 {
-                    content += "datetime.date(" + Convert.ToDateTime(x).ToString("yyyy,MM,dd") + "),";
+                    //content += "datetime.date(" + Convert.ToDateTime(x).ToString("yyyy,MM,d,H,m,s") + "),";
+                    content += "datetime.datetime.combine(datetime.date(" + Convert.ToDateTime(x).ToString("yyyy,M,d") + "), datetime.time(" + Convert.ToDateTime(x).ToString("H,m,s") + ")),";
                 }
                 content = content.TrimEnd(',') + "]";
                 Process.AddInstruction(content);
@@ -367,12 +370,10 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
                 content = content.TrimEnd(',') + "]";
                 Process.AddInstruction(content);
 
-                Process.AddInstruction("for i,item in enumerate(y" + index + "):");
-                Process.AddInstruction("\txP = x" + index + "[i]");
-                Process.AddInstruction("\tyP = y" + index + "[i]");
-
-                //Process.AddInstruction("\tplt.text(xP,yP,str(item)+\"" + scatterSuffix + "\",fontsize=11)");
-                Process.AddInstruction("\tplt.text(xP, yP, \"{:,}\".format(item) + \"" + scatterSuffix + "\", fontsize=11)");
+                //Process.AddInstruction("for i,item in enumerate(y" + index + "):");
+                //Process.AddInstruction("\txP = x" + index + "[i]");
+                //Process.AddInstruction("\tyP = y" + index + "[i]");
+                //Process.AddInstruction("\tplt.text(xP, yP, \"{:,}\".format(item) + \"" + scatterSuffix + "\", fontsize=11)");
 
                 Process.AddInstruction("plt.plot(x" + index + ",y" + index + $",label=\"{item.Legend}\")");
                 if (item.HasScatter)
