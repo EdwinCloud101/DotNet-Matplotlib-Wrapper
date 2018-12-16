@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using LibStandard.Matplotlib.PlotDesign.TickDesign;
+using LibStandard.Matplotlib.PlotOperation.CommandComposer;
 
 namespace LibStandard.Matplotlib.PlotDesign
 {

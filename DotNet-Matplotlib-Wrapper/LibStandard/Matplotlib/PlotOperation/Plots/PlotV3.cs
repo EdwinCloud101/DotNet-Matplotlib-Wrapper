@@ -36,13 +36,32 @@ namespace LibStandard.Matplotlib.PlotOperation.Plots
             Composer.WriteTitle(Design1.Title);
             Composer.WriteLabelXY(Design1.XLabel, Design1.YLabel);
 
-            //Composer.WriteTicks(Design1.XTick, Design1.YTick, PairSource);
-            Composer.WriteTicks((IXTick<DateTime>)Design1.XTick, (IYTick<decimal>)Design1.YTick, PairSource, Design1.IncreaseTickRate);
+            Composer.WriteTicks(Composer.TickComposer, PairSource, Design1.IncreaseTickRate);
 
             Composer.WriteXYPair(PairSource, Design1.ScatterSuffix);
             Composer.WritePlotShow();
             Process.CommitInstruction();
         }
+
+        /// <summary>
+        /// This is the previois old verison working: 1
+        /// </summary>
+        //public void Show()
+        //{
+        //    Composer.WritePython();
+        //    Composer.WriteImportModules();
+        //    Composer.WritePlotColor(Design1.PlotColor);
+        //    Composer.WriteGrid(Design1.HasGrid);
+        //    Composer.WriteTitle(Design1.Title);
+        //    Composer.WriteLabelXY(Design1.XLabel, Design1.YLabel);
+
+        //    //Composer.WriteTicks(Design1.XTick, Design1.YTick, PairSource);
+        //    Composer.WriteTicks((IXTick<DateTime>)Design1.XTick, (IYTick<decimal>)Design1.YTick, PairSource, Design1.IncreaseTickRate);
+
+        //    Composer.WriteXYPair(PairSource, Design1.ScatterSuffix);
+        //    Composer.WritePlotShow();
+        //    Process.CommitInstruction();
+        //}
     }
 
     public interface IPlotV3<T, Q>
