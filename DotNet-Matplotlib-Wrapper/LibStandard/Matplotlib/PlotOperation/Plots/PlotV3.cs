@@ -36,9 +36,9 @@ namespace LibStandard.Matplotlib.PlotOperation.Plots
             Composer.WriteTitle(Design1.Title);
             Composer.WriteLabelXY(Design1.XLabel, Design1.YLabel);
 
-            Composer.WriteTicks(Composer.TickComposer, PairSource, Design1.IncreaseTickRate);
-
+            Composer.WriteTicks((IXTick<DateTime>)Design1.XTick, (IYTick<decimal>)Design1.YTick, PairSource, Design1.IncreaseTickRate);
             Composer.WriteXYPair(PairSource, Design1.ScatterSuffix);
+
             Composer.WritePlotShow();
             Process.CommitInstruction();
         }

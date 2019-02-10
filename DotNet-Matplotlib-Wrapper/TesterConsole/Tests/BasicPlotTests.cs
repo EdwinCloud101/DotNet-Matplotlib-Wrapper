@@ -17,15 +17,15 @@ namespace TesterConsole.Tests
     {
 
         /// <summary>
-        /// Test with datetime instead only date on the x axis
+        /// Test with date only, no datetime considered in the tick
         /// </summary>
         [Test]
-        public void DateTimeXPlot()
+        public void DateXPlot()
         {
             var xyPair1 = new XyPair<DateTime, long>("AAAAA");
-            xyPair1.AddX(new DateTime(2018, 11, 20, 2, 0, 0));
-            xyPair1.AddX(new DateTime(2018, 11, 20, 3, 0, 0));
-            xyPair1.AddX(new DateTime(2018, 11, 20, 4, 0, 0));
+            xyPair1.AddX(new DateTime(2018, 11, 20, 0, 0, 0));
+            xyPair1.AddX(new DateTime(2018, 11, 21, 0, 0, 0));
+            xyPair1.AddX(new DateTime(2018, 11, 22, 0, 0, 0));
             xyPair1.AddY(18);
             xyPair1.AddY(32);
             xyPair1.AddY(21);
@@ -38,7 +38,36 @@ namespace TesterConsole.Tests
             colors.InsideColor = "#d1d1d1";
 
             IDesign<DateTime, long> design = new Design<DateTime, long>(title, colors, true, 16m, "▬", "CCCCC", "DDDDD");
-            ITickComposer tickComposer = new TickComposer(true);
+            ITickComposer<DateTime, long> tickComposer = new TickComposer<DateTime, long>(false, pythonProcess);
+            IGeneralComposer<DateTime, long> composer = new GeneralComposer<DateTime, long>(pythonProcess, tickComposer);
+            IPlotV3<DateTime, long> plot = new PlotV3<DateTime, long>(pythonProcess, design, composer);
+            plot.AddSource(xyPair1);
+            plot.Show();
+        }
+
+        /// <summary>
+        /// Test with datetime instead only date on the x axis
+        /// </summary>
+        [Test]
+        public void DateTimeXPlot()
+        {
+            var xyPair1 = new XyPair<DateTime, long>("AAAAA");
+            xyPair1.AddX(new DateTime(2018, 11, 20, 2, 0, 0));
+            xyPair1.AddX(new DateTime(2018, 11, 20, 4, 0, 0));
+            xyPair1.AddX(new DateTime(2018, 11, 20, 8, 0, 0));
+            xyPair1.AddY(18);
+            xyPair1.AddY(32);
+            xyPair1.AddY(21);
+            xyPair1.HasScatter = true;
+
+            IPythonProcess pythonProcess = new PythonProcess(PythonResources.GetPythonPath());
+            ITitle title = new Title("BBBBB", 32);
+            IPlotColor colors = new PlotColor();
+            colors.OutsideColor = "#979899";
+            colors.InsideColor = "#d1d1d1";
+
+            IDesign<DateTime, long> design = new Design<DateTime, long>(title, colors, true, 16m, "▬", "CCCCC", "DDDDD");
+            ITickComposer<DateTime, long> tickComposer = new TickComposer<DateTime, long>(true, pythonProcess);
             IGeneralComposer<DateTime, long> composer = new GeneralComposer<DateTime, long>(pythonProcess, tickComposer);
             IPlotV3<DateTime, long> plot = new PlotV3<DateTime, long>(pythonProcess, design, composer);
             plot.AddSource(xyPair1);
@@ -65,7 +94,7 @@ namespace TesterConsole.Tests
             colors.InsideColor = "#d1d1d1";
 
             IDesign<DateTime, long> design = new Design<DateTime, long>(title, colors, true, 16m, "▬", "aaa", "bbbb");
-            ITickComposer tickComposer = new TickComposer(false);
+            ITickComposer<DateTime, long> tickComposer = new TickComposer<DateTime, long>(false, pythonProcess);
             IGeneralComposer<DateTime, long> composer = new GeneralComposer<DateTime, long>(pythonProcess, tickComposer);
             IPlotV3<DateTime, long> plot = new PlotV3<DateTime, long>(pythonProcess, design, composer);
             plot.AddSource(xyPair1);
@@ -91,7 +120,7 @@ namespace TesterConsole.Tests
             colors.InsideColor = "#d1d1d1";
 
             IDesign<DateTime, decimal> design = new Design<DateTime, decimal>(title, colors, true, 0.5m, "&", "cccc", "dddd");
-            ITickComposer tickComposer = new TickComposer(false);
+            ITickComposer<DateTime, decimal> tickComposer = new TickComposer<DateTime, decimal>(false, pythonProcess);
             IGeneralComposer<DateTime, decimal> composer = new GeneralComposer<DateTime, decimal>(pythonProcess, tickComposer);
             IPlotV3<DateTime, decimal> plot = new PlotV3<DateTime, decimal>(pythonProcess, design, composer);
             plot.AddSource(xyPair1);

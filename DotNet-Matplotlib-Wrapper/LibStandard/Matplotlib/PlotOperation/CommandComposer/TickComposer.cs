@@ -7,17 +7,18 @@ using LibStandard.Matplotlib.PlotOperation.Pairs;
 
 namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
 {
-    public class TickComposer : ITickComposer
+    public class TickComposer<T, Q> : ITickComposer<T, Q>
     {
         public IPythonProcess PythonProcess { get; private set; }
-        private readonly bool _xHasHour;
+        public bool XHasHour { get; private set; }
 
-        public TickComposer(bool xHasHour)
+        public TickComposer(bool xHasHour, IPythonProcess pythonProcess)
         {
-            _xHasHour = xHasHour;
+            XHasHour = xHasHour;
+            PythonProcess = pythonProcess;
         }
 
-        protected void XisDateYisDecimal(IXTick<DateTime> xAxis, IYTick<decimal> yAxis, List<XyPair<DateTime, decimal>> xyPair, decimal increaseTickRate)
+        protected void XisDateYisDecimal(IXTick<DateTime> xAxis, IYTick<decimal> yAxis, List<XyPair<T, Q>> xyPair, decimal increaseTickRate)
         {
             DateTime minX = DateTime.MaxValue;
             DateTime maxX = DateTime.MinValue;
@@ -64,8 +65,8 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             while (aux <= maxX)
             {
                 leftContent += "datetime.date(" + aux.ToString("yyyy,MM,d") + "),";
-                rightContent += "\"" + aux.ToString("M/d") + "\\n" + aux.ToString("H:m") + "\",";
-                aux = aux.Add(new TimeSpan(0, 2, 0, 0));//TODO:aaaa
+                rightContent += "\"" + aux.ToString("M/d") + "\\n" + aux.ToString("ddd") + "\",";
+                aux = aux.Add(new TimeSpan(1, 0, 0, 0));//TODO:aaaa
             }
             leftContent = leftContent.TrimEnd(',') + "],[" + rightContent.TrimEnd(',') + "])";
             PythonProcess.AddInstruction(leftContent);
@@ -100,7 +101,7 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             PythonProcess.AddInstruction(leftContent);
         }
 
-        protected void XisDateTimeYisDecimal(IXTick<DateTime> xAxis, IYTick<decimal> yAxis, List<XyPair<DateTime, decimal>> xyPair, decimal increaseTickRate)
+        protected void XisDateTimeYisDecimal(IXTick<DateTime> xAxis, IYTick<decimal> yAxis, List<XyPair<T, Q>> xyPair, decimal increaseTickRate)
         {
             DateTime minX = DateTime.MaxValue;
             DateTime maxX = DateTime.MinValue;
@@ -184,9 +185,9 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
             PythonProcess.AddInstruction(leftContent);
         }
 
-        public void WriteTick(IXTick<DateTime> xAxis, IYTick<decimal> yAxis, List<XyPair<DateTime, decimal>> xyPair, decimal increaseTickRate)
+        public void WriteTick(IXTick<DateTime> xAxis, IYTick<decimal> yAxis, List<XyPair<T, Q>> xyPair, decimal increaseTickRate)
         {
-            if (_xHasHour)
+            if (XHasHour)
             {
                 XisDateTimeYisDecimal(xAxis, yAxis, xyPair, increaseTickRate);
             }
@@ -197,11 +198,10 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
         }
     }
 
-    public interface ITickComposer
+    public interface ITickComposer<T, Q>
     {
         IPythonProcess PythonProcess { get; }
-        void WriteTick(IXTick<DateTime> xAxis, IYTick<decimal> yAxis, List<XyPair<DateTime, decimal>> xyPair, decimal increaseTickRate);
-        //void XisDateYisDecimal(IXTick<DateTime> xAxis, IYTick<decimal> yAxis, List<XyPair<DateTime, decimal>> xyPair, decimal increaseTickRate);
-        //void XisDateTimeYisDecimal(IXTick<DateTime> xAxis, IYTick<decimal> yAxis, List<XyPair<DateTime, decimal>> xyPair, decimal increaseTickRate);
+        void WriteTick(IXTick<DateTime> xAxis, IYTick<decimal> yAxis, List<XyPair<T, Q>> xyPair, decimal increaseTickRate);
+        bool XHasHour { get; }
     }
 }

@@ -9,10 +9,10 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
 {
     public class GeneralComposer<T, Q> : IGeneralComposer<T, Q>
     {
-        public ITickComposer TickComposer { get; private set; }
+        public ITickComposer<T, Q> TickComposer { get; private set; }
         public IPythonProcess PythonProcess { get; }
 
-        public GeneralComposer(IPythonProcess process, ITickComposer tickComposer)
+        public GeneralComposer(IPythonProcess process, ITickComposer<T, Q> tickComposer)
         {
             TickComposer = tickComposer;
             PythonProcess = process;
@@ -359,8 +359,15 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
                 content = "x" + index + " = [";
                 foreach (var x in item.X)
                 {
-                    //content += "datetime.date(" + Convert.ToDateTime(x).ToString("yyyy,MM,d,H,m,s") + "),";
-                    content += "datetime.datetime.combine(datetime.date(" + Convert.ToDateTime(x).ToString("yyyy,M,d") + "), datetime.time(" + Convert.ToDateTime(x).ToString("H,m,s") + ")),";
+                    if (TickComposer.XHasHour)
+                    {
+                        content += "datetime.datetime.combine(datetime.date(" + Convert.ToDateTime(x).ToString("yyyy,M,d") + "), datetime.time(" + Convert.ToDateTime(x).ToString("H,m,s") + ")),";
+                    }
+                    else
+                    {
+                        content += "datetime.datetime.combine(datetime.date(" + Convert.ToDateTime(x).ToString("yyyy,M,d") + "), datetime.time(" + Convert.ToDateTime(x).ToString("H,m,s") + ")),";
+                        //content += "datetime.date(" + Convert.ToDateTime(x).ToString("yyyy,MM,d") + "),";
+                    }
                 }
                 content = content.TrimEnd(',') + "]";
                 PythonProcess.AddInstruction(content);
@@ -405,6 +412,6 @@ namespace LibStandard.Matplotlib.PlotOperation.CommandComposer
         void WritePlotShow();
         void WriteTicksLong(IXTick<DateTime> xTick, IYTick<long> yTick, List<XyPair<T, Q>> xyPair);
         void WriteLabelXY(string xLabel, string yLabel);
-        ITickComposer TickComposer { get; }
+        ITickComposer<T, Q> TickComposer { get; }
     }
 }
